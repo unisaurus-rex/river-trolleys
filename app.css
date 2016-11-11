@@ -1,0 +1,16 @@
+strong {
+    font-weight: bold;
+}
+
+hr {
+    border: 1px solid gray;
+    border-top: 0.1rem solid #f4f5f6;
+    margin-bottom: 3.5rem;
+    margin-top: 3rem;
+}
+
+/* Each river line should have same stroke width and fill, but line will determine its own color */
+.rivers {
+    fill: none;
+    stroke-width: 2;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "river-trolleys",
+  "homepage": "https://github.com/unisaurus-rex/d3-examples",
+  "authors": [
+    "Jeff Flower <jeffrey.flower@vantiv.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
