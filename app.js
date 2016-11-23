@@ -1,5 +1,6 @@
 import {trolleyData} from "data.js";
-import lineChart from "lineChart.js";
+// import lineChart from "lineChart.js";
+import {select} from "./bower_components/d3-selection/index.js";
 
 var height = 600;
 var width = 900;
@@ -8,7 +9,7 @@ var margin = {
   left: 40
 }
 
-var svg = d3.select('#chartContainer')
+var svg = select('#chartContainer')
     .append('svg')
     .attr("height", height)
     .attr("width", width);
@@ -18,5 +19,5 @@ var svg = d3.select('#chartContainer')
 // x axis is year
 // y axis is trolleys
 
-var trolley = lineChart().height(height).width(width).marginTop(40).marginBottom(40).marginLeft(40).marginRight(40);
-trolley();
+// window.trolley = lineChart();
+//var trolley = lineChart().height(height).width(width).marginTop(40).marginBottom(40).marginLeft(40).marginRight(40);

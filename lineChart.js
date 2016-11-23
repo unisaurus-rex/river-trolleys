@@ -7,8 +7,11 @@ export default function lineChart() {
         left: 40,
         right: 40
       },
-      xDomain,
-      yDomain;
+      // Inclusive ranges for mapping x and y axis values to pixels
+      xDomain = [0,0], 
+      yDomain = [0,0],
+      xScale,
+      yScale;
 
   function chart() {
     // generate chart in here
@@ -16,6 +19,7 @@ export default function lineChart() {
   }
 
   // in javascript, functions are objects, which means we can add properties to them
+  // additionally if each sub function returns chart, the function calls become chainable
   chart.width = function(value){
     if(!arguments.length) return width;
 
@@ -58,5 +62,29 @@ export default function lineChart() {
     return chart;
   }
 
+  chart.xDomain = function(limitsArr){
+    if(!arguments.length) return xDomain;
+
+    xDomain = d3.range(limitsArr[0], limitsArr[1]);
+    xScale = d3.scalePoint().domain(xDomain).range([margins.left, width - margins.right]);
+    return chart;
+  }
+
+  chart.xScale = function(value){
+    return xScale(value);
+  }
+
+  chart.yDomain = function(value){
+    if(!arguments.length) return yDomain;
+
+    yDomain = value;
+    yScale = d3.scaleLinear().domain(yDomain).range([(height - margins.bottom), margins.top]);
+    return chart;
+  }
+
+  chart.yScale = function(value){
+    return yScale(value);
+  }
+  
   return chart;
 }
