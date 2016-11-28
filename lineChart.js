@@ -1,3 +1,7 @@
+// import {scalePoint as d3ScalePoint, scaleLinear as d3ScaleLinear} from "./bower_components/d3-scale/index.js"; 
+// import {range as d3Range} from "./bower_components/d3-array/index.js";
+import * as d3 from "./bower_components/d3/d3.js";
+
 export default function lineChart() {
   var width = 900,
       height = 700,
@@ -10,12 +14,15 @@ export default function lineChart() {
       // Inclusive ranges for mapping x and y axis values to pixels
       xDomain = [0,0], 
       yDomain = [0,0],
-      xScale,
-      yScale;
+      xScale, // function, takes x axis value and converts to pixel value
+      yScale, // function, takes y axis value and converts to pixel value
+      lineFunc = d3.line(); // generates a path string for a line
 
-  function chart() {
+  function chart(dataArr) {
     // generate chart in here
     console.log("width: " + width + " height: " + height + " margins: " + margins);
+    console.log(" path: " + lineFunc(dataArr) );
+    // TODO: append a line to a d3 selection passed to the function
   }
 
   // in javascript, functions are objects, which means we can add properties to them
@@ -62,10 +69,20 @@ export default function lineChart() {
     return chart;
   }
 
+  // func should take a data object and return the value in the object that needs to be converted to a pixel on the x axis
+  chart.xDataAccessor = function(func){
+    lineFunc.x( (d) => { return xScale( func(d) ); });
+    return chart;
+  };
+
+  // xDomain is the lower and upper limits on possible x values, if limitsArr is passed to function
+  // set xDomain and the use the domain to set the xScale, which is a d3 function that we use to conver x
+  // values to pixel values
   chart.xDomain = function(limitsArr){
     if(!arguments.length) return xDomain;
 
-    xDomain = d3.range(limitsArr[0], limitsArr[1]);
+    // d3.scalePoint takes a list of values, create the list with .range and pass to scalePoint
+    xDomain = d3.range(limitsArr[0], limitsArr[1]); 
     xScale = d3.scalePoint().domain(xDomain).range([margins.left, width - margins.right]);
     return chart;
   }
@@ -73,6 +90,12 @@ export default function lineChart() {
   chart.xScale = function(value){
     return xScale(value);
   }
+
+  // func should take a data object and return the value in the object that needs to be converted to a pixel on the y axis
+  chart.yDataAccessor = function(func){
+    lineFunc.y( (d) => { return yScale( func(d) ); });
+    return chart;
+  };
 
   chart.yDomain = function(value){
     if(!arguments.length) return yDomain;
