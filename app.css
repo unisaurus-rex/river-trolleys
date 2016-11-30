@@ -11,6 +11,6 @@ hr {
 
 /* Each river line should have same stroke width and fill, but line will determine its own color */
 .rivers {
-    fill: none;
+    fill: none; 
     stroke-width: 2;
 }

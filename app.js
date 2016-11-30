@@ -39,6 +39,9 @@ riverNames = Array.from(new Set(riverNames));
 
 // get the data for only one river
 var riverData = trolleyData.filter((d) => { return d[8] == riverNames[0]});
-trolley(riverData);
+var container = svg.append("g").attr("id", "lines");
+window.container = container;
+var ln = trolley(container, riverData);
+ln.classed("rivers", true).style("stroke", "cornflowerblue");
 
 
