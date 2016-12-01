@@ -1,15 +1,10 @@
 import {trolleyData} from "data.js";
 import lineChart from "lineChart.js";
+import {buildRiverArrays} from "dataparser.js";
 import * as d3 from "./bower_components/d3/d3.js";
-// import {select as d3Select} from "./bower_components/d3-selection/index.js";
-// import * as d3-selection from "./bower_components/d3-selection/index.js";
 
 var height = 600;
 var width = 900;
-var margin = {
-  bottom: 40,
-  left: 40
-}
 
 var svg = d3.select('#chartContainer')
     .append('svg')
@@ -31,17 +26,29 @@ window.trolley = lineChart()
   .xDomain([2005,2012])
   .yDomain([0,90])
   .xDataAccessor( (d) => { return parseInt( d[9] ); })
-  .yDataAccessor( (d) => { return parseInt( d[10] ); });
+  .yDataAccessor( (d) => {
+    let count = d[10];
+    if(count === null){
+      return 0;
+    }
+    return parseInt(count);
+  });
 
-// get a list of unique river names
-var riverNames = trolleyData.map(function(d){return d[8];});
-riverNames = Array.from(new Set(riverNames));
 
-// get the data for only one river
-var riverData = trolleyData.filter((d) => { return d[8] == riverNames[0]});
-var container = svg.append("g").attr("id", "lines");
-window.container = container;
+// parse trolleyData into something we can pass to d3
+var riverData = buildRiverArrays(trolleyData); 
+var container = svg.append("g").attr("id", "lines").classed("rivers", true);
+// ln is d3 selection containing all path objects
 var ln = trolley(container, riverData);
-ln.classed("rivers", true).style("stroke", "cornflowerblue");
 
+// create a function that returns a unique color for unique inputs
+var color = d3.scaleOrdinal(d3.schemeCategory20);
+// color each river line with a distinct color 
+ln.style("stroke", (d) => {
+  var name = d[0][8];
+  return color(name);
+});
 
+window.d3 = d3;
+window.container = container;
+window.s = riverData.slice(0,5);

@@ -18,16 +18,34 @@ export default function lineChart() {
       yScale, // function, takes y axis value and converts to pixel value
       lineFunc = d3.line(); // generates a path string for a line
 
-  // container: d3 selection object that should contain the line to be drawn
+  // container: d3 selection object that should contain the lines to be drawn
   function chart(container, dataArr) {
-    // generate chart in here
-    console.log(" path: " + lineFunc(dataArr) );
-    return container.selectAll("path")
-    // need .data to treat dataArr as a single item, so wrap it in array
-      .data([dataArr])
-      .enter()
+    let startLineFunc = d3.line()
+        .x( (d) => {return margins.left} )
+        .y( (d) => {return width - margins.top} );
+    
+    // TODO: handle update and exit selections 
+    var sel = container.selectAll("path")
+        .data(dataArr);
+
+    sel.enter()
       .append("path")
-      .attr("d", lineFunc);
+      .attr("d", lineFunc)
+      .attr("stroke-dasharray", "2000 2000")
+      .attr("stroke-dashoffset", "2000")
+      .transition()
+      .duration(1500)
+      .ease(d3.easeQuadInOut)
+      .attr("stroke-dashoffset", "0");
+
+    sel.exit()
+      .transition()
+      .duration(1000)
+      .attr("stroke-dashoffset", "-2000")
+      .ease(d3.easeLinear)
+      .remove(); 
+
+    return container.selectAll("path");
   }
 
   // in javascript, functions are objects, which means we can add properties to them
