@@ -14,3 +14,13 @@ hr {
     fill: none; 
     stroke-width: 2px;
 }
+
+.gridline{
+    stroke: lightgrey;
+    stroke-opacity: 0.3;
+    shape-rendering: crispEdges;
+}
+
+.gridline path{
+    stroke-width: 0px;
+}

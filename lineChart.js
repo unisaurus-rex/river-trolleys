@@ -111,6 +111,8 @@ export default function lineChart() {
   }
 
   chart.xScale = function(value){
+    if(!arguments.length) return xScale;
+
     return xScale(value);
   }
 
@@ -129,6 +131,7 @@ export default function lineChart() {
   }
 
   chart.yScale = function(value){
+    if(!arguments.length) return yScale;
     return yScale(value);
   }
   
