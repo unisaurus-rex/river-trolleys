@@ -32,8 +32,10 @@ window.trolley = lineChart()
       return 0;
     }
     return parseInt(count);
-  });
+  })
+  .keyFunc( (d) => { return d[0][8]} );
 
+           
 /***** Add Axes *****/
 
 var xAxisGroup = svg.append('g').attr("transform", "translate(0," + (trolley.height() - trolley.marginBottom() ) + ")");

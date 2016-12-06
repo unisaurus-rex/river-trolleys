@@ -16,7 +16,8 @@ export default function lineChart() {
       yDomain = [0,0],
       xScale, // function, takes x axis value and converts to pixel value
       yScale, // function, takes y axis value and converts to pixel value
-      lineFunc = d3.line(); // generates a path string for a line
+      lineFunc = d3.line(), // generates a path string for a line
+      keyFunc = function(d,i) {return i;}; // key function for object constancy
 
   // container: d3 selection object that should contain the lines to be drawn
   function chart(container, dataArr) {
@@ -26,7 +27,7 @@ export default function lineChart() {
     
     // TODO: handle update and exit selections 
     var sel = container.selectAll("path")
-        .data(dataArr);
+        .data(dataArr, keyFunc);
 
     sel.enter()
       .append("path")
@@ -133,6 +134,13 @@ export default function lineChart() {
   chart.yScale = function(value){
     if(!arguments.length) return yScale;
     return yScale(value);
+  }
+
+  chart.keyFunc = function(func) {
+    if(!arguments.length) return keyFunc;
+
+    keyFunc = func;
+    return chart;
   }
   
   return chart;
